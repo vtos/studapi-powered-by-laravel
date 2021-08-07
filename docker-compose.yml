@@ -1,0 +1,18 @@
+version: '3'
+services:
+  mongo-dev:
+    image: 'mongo:4.4.8-focal'
+    ports:
+    - "27017:27017"
+  mongo-test:
+    image: 'mongo:4.4.8-focal'
+    ports:
+    - "27018:27017"
+  studapi:
+    build: .
+    ports:
+      - "8080:80"
+    volumes:
+        - /var/www/html/studapi/vendor
+        - /var/www/html/studapi/storage
+        - .:/var/www/html/studapi
