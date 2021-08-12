@@ -1,18 +1,20 @@
 version: '3'
 services:
-  mongo-dev:
-    image: 'mongo:4.4.8-focal'
-    ports:
-    - "27017:27017"
   mongo-test:
     image: 'mongo:4.4.8-focal'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DB_DATABASE}
+      MONGO_INITDB_USERNAME: ${DB_USERNAME}
+      MONGO_INITDB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./var/mongo-init.sh:/docker-entrypoint-initdb.d/mongo-init.sh:ro
     ports:
-    - "27018:27017"
+      - '27018:27017'
   studapi:
     build: .
     ports:
-      - "8080:80"
+      - '8080:80'
     volumes:
-        - /var/www/html/studapi/vendor
-        - /var/www/html/studapi/storage
         - .:/var/www/html/studapi
