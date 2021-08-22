@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as IlluminateHttpResponse;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
+use App\Models\Student;
+use App\Domain\Value\SIN;
+use App\Domain\Value\GroupName;
+use App\Domain\Value\StudentName;
 
 class StudentController extends Controller
 {
@@ -29,16 +32,21 @@ class StudentController extends Controller
             'active',
             'first_name',
             'last_name',
+            'group_name',
         ]);
 
         $student = new Student();
-        $student->sin = $fromRequest['sin'];
+        $student->sin = SIN::fromInt($fromRequest['sin']);
+        $student->group_name = GroupName::fromString($fromRequest['group_name']);
         $student->active = $fromRequest['active'];
-        $student->first_name = $fromRequest['first_name'];
-        $student->last_name = $fromRequest['last_name'];
+        $student->name = StudentName::fromStringsWithNoSecondName(
+            $fromRequest['first_name'],
+            $fromRequest['last_name']
+        );
+
         $student->save();
 
-        return response($student->toArray(), HttpFoundationResponse::HTTP_CREATED);
+        return response($student->toJson(), HttpFoundationResponse::HTTP_CREATED);
     }
 
     public function show(int $id): IlluminateHttpResponse
@@ -49,11 +57,7 @@ class StudentController extends Controller
             ]
         );
 
-        if ($students->count() > 1) {
-            // Return an error here.
-        }
-
-        return response($students->first()->toArray(), HttpFoundationResponse::HTTP_OK);
+        return response($students->first()->toJson(), HttpFoundationResponse::HTTP_OK);
     }
 
     /**

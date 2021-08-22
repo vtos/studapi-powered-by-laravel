@@ -35,6 +35,21 @@ final class StudentName
         $this->secondName = $secondName;
     }
 
+    public function firstName(): string
+    {
+        return $this->firstName;
+    }
+
+    public function lastName(): string
+    {
+        return $this->lastName;
+    }
+
+    public function secondName(): string
+    {
+        return $this->secondName;
+    }
+
     public function asString(): string
     {
         $parts = [

@@ -23,6 +23,7 @@ final class CreateStudentTest extends TestCase
                 'active' => true,
                 'first_name' => 'John',
                 'last_name' => 'Doe',
+                'group_name' => 'MATH110',
             ]
         );
         $response->assertStatus(Response::HTTP_CREATED);
@@ -35,6 +36,7 @@ final class CreateStudentTest extends TestCase
                 'active' => true,
                 'first_name' => 'John',
                 'last_name' => 'Doe',
+                'group_name' => 'MATH110',
             ]
         );
     }
